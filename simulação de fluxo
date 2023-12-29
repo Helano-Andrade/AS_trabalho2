@@ -1,0 +1,55 @@
+class Usuario:
+    def solicitar_autenticacao(self):
+        print("1. Usuário solicita autenticação")
+
+class Controle:
+    def acionar_autenticacao(self, usuario):
+        print("2. Controle aciona serviço de autenticação")
+        # Lógica de autenticação
+        return True
+
+    def solicitar_acesso_analise(self):
+        print("3. Usuário solicita acesso ao serviço de análise de dados")
+
+class DataQualy:
+    def realizar_analise_estatistica(self):
+        print("4. DataQualy realiza análise estatística do dataset")
+        # Simulando um erro no processo de análise
+        raise Exception("Erro: Dataset não pode ser utilizado")
+
+class Dataset:
+    def __init__(self):
+        print("6. Dataset criado")
+
+class Storage:
+    def salvar_dados(self):
+        print("7. Dados do dataset são salvos no storage")
+
+class BancoDeDados:
+    def salvar_metadados(self):
+        print("8. Metadados do dataset são salvos no banco de dados")
+
+# Simulação do fluxo principal
+try:
+    usuario = Usuario()
+    controle = Controle()
+    data_qualy = DataQualy()
+    storage = Storage()
+    banco_de_dados = BancoDeDados()
+
+    usuario.solicitar_autenticacao()
+    autenticado = controle.acionar_autenticacao(usuario)
+
+    if autenticado:
+        controle.solicitar_acesso_analise()
+        data_qualy.realizar_analise_estatistica()
+
+        # Se a análise estatística for bem-sucedida, o fluxo continua
+        dataset = Dataset()
+        storage.salvar_dados()
+        banco_de_dados.salvar_metadados()
+
+except Exception as e:
+    print(f"Erro: {e}")
+    # Lógica para informar o usuário sobre o erro
+    print("Informar usuário sobre o erro na criação do dataset.")
