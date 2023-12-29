@@ -1,0 +1,33 @@
+# modulo - usuário
+import numpy as np
+import time  # Added import for time module
+
+def read_dataset():
+    dataset = np.random.normal(0, 1, (10_000, 3))
+    return dataset
+
+def serialize_dataset(dataset):
+    time.sleep(30)
+    print('dataset serialized')
+    return dataset
+
+def parse_post(dataset):
+    post = {
+        'random_dataset': dataset
+    }
+    return post
+
+def login():
+    # ...
+    logged = auth()
+    # ...
+    return logged
+
+def send_dataset():
+    ds = read_dataset()
+    serialized = serialize_dataset(ds)  # Pass the dataset to serialize_dataset
+    if not serialized:
+        raise IOError('erro ao serializar')
+    rqst = parse_post(serialized)  # monta requisição
+    post_dataset(rqst)  # Assuming post_dataset is defined
+    pass
