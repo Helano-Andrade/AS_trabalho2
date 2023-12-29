@@ -2,7 +2,6 @@
 import numpy as np
 
 def stat_desc(data):
-    # Análise estatística descritiva
     statistics = {
         'mean': np.mean(data),
         'std_dev': np.std(data),
@@ -12,7 +11,6 @@ def stat_desc(data):
     return statistics
 
 def den_rest(data):
-    # Análise de densidade e restrições
     density = np.histogram(data, bins=10, density=True)
     constraints = {
         'density': density[0].tolist(),
@@ -21,13 +19,11 @@ def den_rest(data):
     return constraints
 
 def verify_null(data):
-    # Verificação de valores nulos
     null_values = np.isnan(data)
     num_nulls = np.sum(null_values)
     return num_nulls
 
 def cluster(data):
-    # Análise de agrupamento simples (usando k-means como exemplo)
     from sklearn.cluster import KMeans
 
     kmeans = KMeans(n_clusters=3)
