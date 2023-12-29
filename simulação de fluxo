@@ -49,7 +49,66 @@ try:
         storage.salvar_dados()
         banco_de_dados.salvar_metadados()
 
+
+################################################################
+#######################################################
+
+from flask import Flask, render_template, request
+import mlflow
+
+app = Flask(__name__)
+
+class DatasetCreator:
+    @staticmethod
+    def create_dataset():
+        # Lógica para criação do dataset
+        return "Dataset criado com sucesso"
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/create_dataset', methods=['POST'])
+def create_dataset():
+    try:
+        # Lógica de autenticação
+        # Simulação de autenticação bem-sucedida
+        autenticado = True
+
+        if autenticado:
+            # Lógica para criar o dataset
+            dataset_result = DatasetCreator.create_dataset()
+
+            # Registrando o experimento no MLflow
+            with mlflow.start_run():
+                mlflow.log_param("user", "example_user")
+                mlflow.log_metric("dataset_creation", 1)
+
+            return render_template('result.html', result=dataset_result)
+        else:
+            raise Exception("Erro de autenticação")
+
+    except Exception as e:
+        # Registro do erro no MLflow
+        with mlflow.start_run():
+            mlflow.log_param("user", "example_user")
+            mlflow.log_param("error", str(e))
+            mlflow.log_metric("dataset_creation", 0)
+
+        return render_template('result.html', result=f"Erro: {e}")
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+
 except Exception as e:
     print(f"Erro: {e}")
     # Lógica para informar o usuário sobre o erro
     print("Informar usuário sobre o erro na criação do dataset.")
+
+####################################################################
+
+
+
+
+
