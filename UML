@@ -1,0 +1,44 @@
+@startuml
+
+!define AUTHMODULE class AuthenticationModule {
+  - users: Map<string, UserData>
+  + authenticate_user(username: string, password: string): boolean
+}
+
+!define PERSISTMODULE class DataPersistenceModule {
+  - persistedData: List<Data>
+  + save_to_data_store(data: Data): void
+  + get_persisted_data(): List<Data>
+}
+
+!define DATACLASS class Data {
+  - key: string
+  - value: string
+}
+
+class UserData {
+  - username: string
+  - password: string
+  + UserData(username: string, password: string)
+  + get_username(): string
+  + get_password(): string
+}
+
+package "DATAQUALY" {
+  AUTHMODULE
+  PERSISTMODULE
+  DATACLASS
+  UserData
+}
+
+class CoreModule {
+  - authModule: AuthenticationModule
+  - persistenceModule: DataPersistenceModule
+  + process_data(username: string, password: string, data: Data): boolean
+  + get_persisted_data(): List<Data>
+}
+
+CoreModule --> AuthenticationModule: <<Uses>>
+CoreModule --> DataPersistenceModule: <<Uses>>
+
+@enduml
