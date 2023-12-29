@@ -1,0 +1,33 @@
+import csv
+
+def save_to_csv(data, filename):
+    try:
+        with open(filename, 'w', newline='') as file:
+            csv_writer = csv.writer(file)
+            csv_writer.writerows(data)
+        print(f'Dados salvos com sucesso no arquivo {filename}')
+    except Exception as e:
+        print(f'Erro ao salvar dados: {e}')
+
+def load_from_csv(filename):
+    try:
+        with open(filename, 'r') as file:
+            csv_reader = csv.reader(file)
+            data = [row for row in csv_reader]
+        print(f'Dados carregados com sucesso do arquivo {filename}')
+        return data
+    except FileNotFoundError:
+        print(f'O arquivo {filename} não foi encontrado. Criando um novo.')
+        return []
+    except Exception as e:
+        print(f'Erro ao carregar dados: {e}')
+        return []
+
+data_to_persist_csv = [['valor', 'resistividade'], [1, 'data1'], [2, 'data2'], [3, 'data3']]
+
+save_to_csv(data_to_persist_csv, 'dados.csv')
+
+loaded_data_csv = load_from_csv('dados.csv')
+
+print('Dados carregados:', loaded_data_csv)
+
