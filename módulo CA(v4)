@@ -1,0 +1,49 @@
+
+pip install mlflow
+from flask import Flask, request, jsonify
+from mlflow import log_params
+
+app = Flask(__name__)
+
+class User:
+    def __init__(self, username, password):
+        self.username = username
+        self.password = password
+
+class AuthenticationError(Exception):
+    pass
+
+class AuthenticationModule:
+    def __init__(self):
+        self.users = {
+            'user1': 'pass1',
+            'user2': 'pass2',
+        }
+
+    def authenticate_user(self, username, password):
+        if username in self.users and self.users[username] == password:
+            return True
+        else:
+            raise AuthenticationError("Falha na autenticação")
+
+@app.route('/authenticate', methods=['POST'])
+def authenticate():
+    try:
+        auth_module = AuthenticationModule()
+
+        data = request.json
+        input_username = data.get('username')
+        input_password = data.get('password')
+
+        auth_module.authenticate_user(input_username, input_password)
+
+        log_params({'username': input_username, 'authentication_status': 'success'})
+
+        return jsonify({'status': 'success', 'message': 'Autenticação bem-sucedida!'})
+    except AuthenticationError as e:
+        log_params({'username': input_username, 'authentication_status': 'failure'})
+
+        return jsonify({'status': 'failure', 'message': f'Falha na autenticação: {e}'})
+
+if __name__ == "__main__":
+    app.run(debug=True)
